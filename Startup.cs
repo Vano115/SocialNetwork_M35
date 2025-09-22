@@ -33,11 +33,12 @@ namespace SocialNetwork_M35
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
-
             // Устанавливаем логирование класса Startup
             ILogger logger = loggerFactory.CreateLogger<Startup>();
+
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
 
             // Нам не нужны представления, но в MVC бы здесь стояло AddControllersWithViews()
             services.AddControllersWithViews();
