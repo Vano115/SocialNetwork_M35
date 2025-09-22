@@ -1,9 +1,12 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork_M35.Models;
+using SocialNetwork_M35;
+using SocialNetwork_M35.Data;
 
 namespace SocialNetwork_M35.Controllers
 {
+    [Route("[controller]")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -13,11 +16,13 @@ namespace SocialNetwork_M35.Controllers
             _logger = logger;
         }
 
+        [Route ("Index")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Route("Privacy")]
         public IActionResult Privacy()
         {
             return View();

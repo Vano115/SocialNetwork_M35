@@ -2,6 +2,15 @@
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
 using System;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Hosting;
+using SocialNetwork_M35.Services;
+using SocialNetwork_M35.Data;
+using Microsoft.AspNetCore.Routing;
+using AutoMapper;
+using System.Text;
 
 namespace SocialNetwork_M35
 {
@@ -15,10 +24,20 @@ namespace SocialNetwork_M35
             .AddJsonFile("appsettings.Development.json")
           .Build();
 
+        /// <summary>
+        /// Логгер, для AutoMappera нужен ILoggerFactory
+        /// </summary>
+        private ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
+        public Startup() { }
+
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApiContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
+
+            // Устанавливаем логирование класса Startup
+            ILogger logger = loggerFactory.CreateLogger<Startup>();
 
             // Нам не нужны представления, но в MVC бы здесь стояло AddControllersWithViews()
             services.AddControllersWithViews();
@@ -33,11 +52,18 @@ namespace SocialNetwork_M35
             //services.AddScoped<IValidator<AddDeviceRequest>, AddDeviceRequestValidator>();
 
             // FluentValidation для авто проверки На сайте документации не рекомнедовано использовать авто проверку
-            services.AddValidatorsFromAssemblyContaining<AddDeviceRequestValidator>();
+            //services.AddValidatorsFromAssemblyContaining<AddDeviceRequestValidator>();
 
             // Automapper
-            var assembly = Assembly.GetAssembly(typeof(MappingProfile));
-            services.AddAutoMapper(assembly);
+
+            // Auto Mapper Configurations
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            }, loggerFactory);
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -53,9 +79,17 @@ namespace SocialNetwork_M35
                 app.UseSwaggerUi(); // UseSwaggerUI Protected by if (env.IsDevelopment())
             }
 
+
+            // Маршрутизация
             app.UseRouting();
-            // app.UseStaticFiles();
+
+            // Использование статических файлов
+            app.UseStaticFiles();
+
+            // Использование аутентификации
             app.UseAuthentication();
+
+            // Использование авторизации
             app.UseAuthorization();
 
             // Сопоставляем маршруты с контроллерами
