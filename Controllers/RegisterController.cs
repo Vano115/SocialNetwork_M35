@@ -37,6 +37,7 @@ namespace SocialNetwork_M35.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
+                    // RedirectToAction - перенаправляет пользователя по указаному пути
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -52,7 +53,7 @@ namespace SocialNetwork_M35.Controllers
         
         [Route("RegisterPart2")]
         [HttpGet]
-        public IActionResult RegisterPart2(RegisterViewModel model)
+        public async Task<IActionResult> RegisterPart2(RegisterViewModel model)
         {
             var user = _mapper.Map<User>(model);
             return View("RegisterPart2", model);
