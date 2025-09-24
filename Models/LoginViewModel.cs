@@ -11,7 +11,7 @@ namespace SocialNetwork_M35.Models
 
         [Required]
         [Display(Name = "Логин")]
-        required public string Login { get; set; }
+        required public string UserName { get; set; }
 
         [Required]
         [Display(Name = "Запомнить меня")]

@@ -6,7 +6,7 @@ using SocialNetwork_M35.Models;
 
 namespace SocialNetwork_M35.Controllers
 {
-    [Route("[controller]")]
+    //[Route("[controller]")]
     public class AccountManagerController : Controller
     {
         private ILogger<RegisterController> _logger;
@@ -28,7 +28,7 @@ namespace SocialNetwork_M35.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View("Home/Login");
+            return View("Login");
         }
 
         [Route("Login")]
