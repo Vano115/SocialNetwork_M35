@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using System.Net;
+using SocialNetwork_M35.Models;
+using SocialNetwork_M35.Data.Entityes;
 
 namespace SocialNetwork_M35.Services
 {
@@ -10,6 +12,8 @@ namespace SocialNetwork_M35.Services
         /// </summary>
         public MappingProfile()
         {
+            CreateMap<RegisterViewModel, User>();
+
             /*
             CreateMap<Address, AddressInfo>();
 

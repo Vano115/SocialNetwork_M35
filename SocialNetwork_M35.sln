@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork_M35", "SocialNetwork_M35.csproj", "{F131922C-4629-4CAB-B3F7-183C2535531F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{23C0E8D4-8FD0-4FE2-948F-A2769FFE799B} = {23C0E8D4-8FD0-4FE2-948F-A2769FFE799B}
+		{2788DC99-9AC2-432A-8603-78D5830DE6C4} = {2788DC99-9AC2-432A-8603-78D5830DE6C4}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork_M35.Data", "SocialNetwork_M35.Data\SocialNetwork_M35.Data.csproj", "{2788DC99-9AC2-432A-8603-78D5830DE6C4}"
 EndProject

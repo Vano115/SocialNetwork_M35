@@ -8,9 +8,13 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Hosting;
 using SocialNetwork_M35.Services;
 using SocialNetwork_M35.Data;
+using SocialNetwork_M35.Data.DbSettings;
 using Microsoft.AspNetCore.Routing;
 using AutoMapper;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
+using SocialNetwork_M35.Data.Entityes;
+using SocialNetwork_M35.Controllers;
 
 namespace SocialNetwork_M35
 {
@@ -33,12 +37,21 @@ namespace SocialNetwork_M35
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // Устанавливаем логирование класса Startup
-            ILogger logger = loggerFactory.CreateLogger<Startup>();
+            loggerFactory.CreateLogger<Startup>();
+            loggerFactory.CreateLogger<RegisterController>();
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
+
+            services.AddIdentity<User, IdentityRole>(opts =>
+            {
+                opts.Password.RequiredLength = 5;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireDigit = false;
+            }).AddEntityFrameworkStores<ApplicationContext>();
 
             // Нам не нужны представления, но в MVC бы здесь стояло AddControllersWithViews()
             services.AddControllersWithViews();
