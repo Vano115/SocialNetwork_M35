@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SocialNetwork_M35.Models
+namespace SocialNetwork_M35.Models.Account
 {
     public class LoginViewModel
     {

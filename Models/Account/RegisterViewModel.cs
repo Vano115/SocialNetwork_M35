@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SocialNetwork_M35.Models
+namespace SocialNetwork_M35.Models.Account
 {
     public class RegisterViewModel
     {
@@ -42,7 +42,7 @@ namespace SocialNetwork_M35.Models
         required public string PasswordConfirm { get; set; }
 
         [Required]
-        [Display(Name = "Никнейм")]
+        [Display(Name = "Логин")]
         required public string Login { get; set; }
     }
 }

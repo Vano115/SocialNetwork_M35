@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@using SocialNetwork_M35.Data.Entityes;
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <a asp-area="" asp-controller="AccountManager" asp-action="Logout">Выход</a>
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,7 +17,7 @@
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/SocialNetwork_M35.styles.css" asp-append-version="true" />
+    <!--<link rel="stylesheet" href="~/SocialNetwork_M35.styles.css" asp-append-version="true" />-->
     <link rel="stylesheet" href="~/css/main-page.css" asp-append-version="true" />
 </head>
 <body>
@@ -38,7 +48,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
         <div class="container">
             &copy; 2025 - SocialNetwork_M35 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

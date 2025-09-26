@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork_M35.Data.Entityes;
-using SocialNetwork_M35.Models;
+using SocialNetwork_M35.Models.Account;
 
 namespace SocialNetwork_M35.Controllers
 {

@@ -1,4 +1,4 @@
-﻿@model LoginViewModel
+﻿@model SocialNetwork_M35.Models.Account.LoginViewModel
 
 @{
     ViewData["Title"] = "Register";
@@ -13,15 +13,15 @@
     <div>
         <label asp-for="UserName"></label><br />
         <input asp-for="UserName" />
-        <span asp-validation-for="UserName"></span>
+        <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="Password"></label><br />
         <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
     <div>
-        <input type="submit" value="Вход" />
+        <button type="submit">Вход</button>
     </div>
 </form>

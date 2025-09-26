@@ -42,16 +42,17 @@ namespace SocialNetwork_M35
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
-
-            services.AddIdentity<User, IdentityRole>(opts =>
+            services
+                .AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton)
+                .AddIdentity<User, IdentityRole>(opts =>
             {
                 opts.Password.RequiredLength = 5;
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
-            }).AddEntityFrameworkStores<ApplicationContext>();
+            })
+                .AddEntityFrameworkStores<ApplicationContext>();
 
             // Нам не нужны представления, но в MVC бы здесь стояло AddControllersWithViews()
             services.AddControllersWithViews();
@@ -109,6 +110,14 @@ namespace SocialNetwork_M35
             // Сопоставляем маршруты с контроллерами
             app.UseEndpoints(endpoints =>
             endpoints.MapControllers());
+
+            /*
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });*/
         }
     }
 }

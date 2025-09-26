@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System.Net;
-using SocialNetwork_M35.Models;
 using SocialNetwork_M35.Data.Entityes;
+using SocialNetwork_M35.Models.Account;
 
 namespace SocialNetwork_M35.Services
 {

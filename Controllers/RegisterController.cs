@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Console;
 using SocialNetwork_M35.Data.Entityes;
-using SocialNetwork_M35.Models;
+using SocialNetwork_M35.Models.Account;
 
 namespace SocialNetwork_M35.Controllers
 {
@@ -52,7 +52,7 @@ namespace SocialNetwork_M35.Controllers
         }
         
         [Route("RegisterPart2")]
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> RegisterPart2(RegisterViewModel model)
         {
             var user = _mapper.Map<User>(model);

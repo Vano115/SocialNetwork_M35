@@ -1,4 +1,4 @@
-﻿@model RegisterViewModel
+﻿@model SocialNetwork_M35.Models.Account.RegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
@@ -13,15 +13,15 @@
     <div>
         <label asp-for="FirstName"></label><br />
         <input asp-for="FirstName" />
-        <span asp-validation-for="FirstName"></span>
+        <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="LastName"></label><br />
         <input asp-for="LastName" />
-        <span asp-validation-for="LastName"></span>
+        <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
 
     <div>
-        <input type="submit" value="Регистрация" />
+        <button type="submit">Зарегистрироваться</button>
     </div>
 </form>

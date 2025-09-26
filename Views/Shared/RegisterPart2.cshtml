@@ -1,4 +1,4 @@
-﻿@model RegisterViewModel
+﻿@model SocialNetwork_M35.Models.Account.RegisterViewModel
 @{
     ViewData["Title"] = "Register";
 }
@@ -7,7 +7,7 @@
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
 
 <h2>Регистрация нового пользователя</h2>
-<form method="post" asp-controller="Register" asp-action="Register">
+<form class="main" method="post" asp-controller="Register" asp-action="Register">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
         <label asp-for="FirstName"></label><br />
@@ -29,20 +29,24 @@
         <input asp-for="EmailReg" />
         <span asp-validation-for="EmailReg"></span>
     </div>
-    <div>
-        <label asp-for="Date"></label><br />
-        <input asp-for="Date" />
-        <span asp-validation-for="Date"></span>
-    </div>
-    <div>
-        <label asp-for="Month"></label><br />
-        <input asp-for="Month" />
-        <span asp-validation-for="Month"></span>
-    </div>
-    <div>
-        <label asp-for="Year"></label><br />
-        <input asp-for="Year" />
-        <span asp-validation-for="Year"></span>
+    <div class="date">
+        <select asp-for="Date" class="form-control date_control" ID="ddlDay">
+            <option value="">@Model.Date</option>
+        </select>
+        <span asp-validation-for="Date" class="text-danger"></span>
+
+        <select asp-for="Month" class="form-control date_control" asp-items="Html.GetEnumSelectList<SocialNetwork_M35.Models.Account.Months>()" onchange="PopulateDays()" ID="ddlMonth">
+            <option value="">@Model.Month</option>
+        </select>
+
+        <span asp-validation-for="Month" class="text-danger"></span>
+
+        <select asp-for="Year" class="form-control date_control" ID="ddlYear"
+                asp-items="Enumerable.Range(DateTime.Now.AddYears(-100).Year, DateTime.Now.AddYears(-14).Year - DateTime.Now.AddYears(-100).Year).Reverse().Select(x=> new SelectListItem(x.ToString(), x.ToString()))"
+                onchange="PopulateDays()">
+            <option value="">@Model.Year</option>
+        </select>
+        <span asp-validation-for="Year" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="PasswordReg"></label><br />
@@ -55,6 +59,30 @@
         <span asp-validation-for="PasswordConfirm"></span>
     </div>
     <div>
-        <input type="submit" value="Регистрация" />
+        <button type="submit">Зарегистрироваться</button>
     </div>
 </form>
+<script type="text/javascript">
+    function PopulateDays() {
+        var ddlMonth = document.getElementById("ddlMonth");
+        var ddlYear = document.getElementById("ddlYear");
+        var ddlDay = document.getElementById("ddlDay");
+
+        var y = ddlYear.options[ddlYear.selectedIndex].value;
+        var m = ddlMonth.options[ddlMonth.selectedIndex].value != 0;
+        if (ddlMonth.options[ddlMonth.selectedIndex].value != 0 && ddlYear.options[ddlYear.selectedIndex].value != 0) {
+            var dayCount = 32 - new Date(ddlYear.options[ddlYear.selectedIndex].value, ddlMonth.options[ddlMonth.selectedIndex].value - 1, 32).getDate();
+            ddlDay.options.length = 0;
+            for (var i = 1; i <= dayCount; i++) {
+                AddOption(ddlDay, i, i);
+            }
+        }
+    }
+
+    function AddOption(ddl, text, value) {
+        var opt = document.createElement("OPTION");
+        opt.text = text;
+        opt.value = value;
+        ddl.options.add(opt);
+    }
+</script>
