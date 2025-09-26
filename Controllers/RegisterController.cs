@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using SocialNetwork_M35.Data.Entityes;
 using SocialNetwork_M35.Models.Account;
@@ -34,6 +35,12 @@ namespace SocialNetwork_M35.Controllers
                 var user = _mapper.Map<User>(model);
 
                 var result = await _userManager.CreateAsync(user, model.PasswordReg);
+                var erors = result.Errors;
+                foreach (var eror in erors)
+                {
+                    _logger.LogInformation(eror.Description);
+                }
+
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
@@ -53,7 +60,7 @@ namespace SocialNetwork_M35.Controllers
         
         [Route("RegisterPart2")]
         [HttpPost]
-        public async Task<IActionResult> RegisterPart2(RegisterViewModel model)
+        public IActionResult RegisterPart2(RegisterViewModel model)
         {
             var user = _mapper.Map<User>(model);
             return View("RegisterPart2", model);

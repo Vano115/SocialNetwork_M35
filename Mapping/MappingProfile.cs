@@ -12,7 +12,8 @@ namespace SocialNetwork_M35.Services
         /// </summary>
         public MappingProfile()
         {
-            CreateMap<RegisterViewModel, User>();
+            CreateMap<RegisterViewModel, User>().ForMember(d => d.UserName,
+                    opt => opt.MapFrom(r => r.Login));
 
             /*
             CreateMap<Address, AddressInfo>();
