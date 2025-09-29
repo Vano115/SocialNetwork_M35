@@ -14,7 +14,8 @@ namespace SocialNetwork_M35.Data.DbSettings
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) 
         {
-            Database.EnsureCreated();
+            //Database.Migrate();
+            //Database.EnsureCreated();
         }
     }
 }
