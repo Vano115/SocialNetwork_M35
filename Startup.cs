@@ -8,9 +8,13 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Hosting;
 using SocialNetwork_M35.Services;
 using SocialNetwork_M35.Data;
+using SocialNetwork_M35.Data.DbSettings;
 using Microsoft.AspNetCore.Routing;
 using AutoMapper;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
+using SocialNetwork_M35.Data.Entityes;
+using SocialNetwork_M35.Controllers;
 
 namespace SocialNetwork_M35
 {
@@ -33,11 +37,23 @@ namespace SocialNetwork_M35
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
+            loggerFactory.CreateLogger<Startup>();
+            loggerFactory.CreateLogger<RegisterController>();
+            loggerFactory.CreateLogger<AccountManagerController>();
 
-            // Устанавливаем логирование класса Startup
-            ILogger logger = loggerFactory.CreateLogger<Startup>();
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+
+            services
+                .AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton)
+                .AddIdentity<User, IdentityRole>(opts =>
+            {
+                opts.Password.RequiredLength = 5;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireDigit = false;
+            })
+                .AddEntityFrameworkStores<ApplicationContext>();
 
             // Нам не нужны представления, но в MVC бы здесь стояло AddControllersWithViews()
             services.AddControllersWithViews();
@@ -95,6 +111,14 @@ namespace SocialNetwork_M35
             // Сопоставляем маршруты с контроллерами
             app.UseEndpoints(endpoints =>
             endpoints.MapControllers());
+
+            /*
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });*/
         }
     }
 }

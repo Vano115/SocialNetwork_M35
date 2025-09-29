@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using System.Net;
+using SocialNetwork_M35.Data.Entityes;
+using SocialNetwork_M35.Models.Account;
 
 namespace SocialNetwork_M35.Services
 {
@@ -10,6 +12,12 @@ namespace SocialNetwork_M35.Services
         /// </summary>
         public MappingProfile()
         {
+            CreateMap<RegisterViewModel, User>().ForMember(d => d.UserName,
+                    opt => opt.MapFrom(r => r.Login));
+
+            CreateMap<RegisterViewModel, User>().ForMember(d => d.UserName,
+                    opt => opt.MapFrom(r => r.Login));
+
             /*
             CreateMap<Address, AddressInfo>();
 
