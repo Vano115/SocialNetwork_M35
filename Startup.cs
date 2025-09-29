@@ -39,6 +39,7 @@ namespace SocialNetwork_M35
         {
             loggerFactory.CreateLogger<Startup>();
             loggerFactory.CreateLogger<RegisterController>();
+            loggerFactory.CreateLogger<AccountManagerController>();
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
 

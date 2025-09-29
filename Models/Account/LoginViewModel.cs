@@ -17,9 +17,9 @@ namespace SocialNetwork_M35.Models.Account
         [Display(Name = "Запомнить меня")]
         required public bool RememberMe { get; set; }
 
-        [Required]
+        
         [Display(Name = "ReturnUrl")]
-        required public string ReturnUrl { get; set; }
+        public string ?ReturnUrl { get; set; }
 
     }
 }

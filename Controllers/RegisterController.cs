@@ -35,11 +35,6 @@ namespace SocialNetwork_M35.Controllers
                 var user = _mapper.Map<User>(model);
 
                 var result = await _userManager.CreateAsync(user, model.PasswordReg);
-                var erors = result.Errors;
-                foreach (var eror in erors)
-                {
-                    _logger.LogInformation(eror.Description);
-                }
 
                 if (result.Succeeded)
                 {

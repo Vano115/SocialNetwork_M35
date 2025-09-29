@@ -135,3 +135,57 @@ a {
         padding: 20px;
     }
 }
+
+/*Стили для чекбокса запомнить меня в авторизации*/
+/* Скрываем стандартный чекбокс */
+.remember-me input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Стиль для пользовательской галочки */
+.checkmark {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-right: 8px;
+    vertical-align: middle;
+    position: relative;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+/* Добавляем эффект при наведении */
+.remember-me:hover .checkmark {
+    border-color: #0066ff;
+}
+
+/* Создаем галочку внутри чекбокса при выбранном состоянии */
+.remember-me input[type="checkbox"]:checked + .checkmark {
+    background-color: #0066ff;
+    border-color: #0066ff;
+}
+
+/* Стиль для галочки внутри */
+.checkmark::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 9px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Показываем галочку, когда чекбокс выбран */
+.remember-me input[type="checkbox"]:checked + .checkmark::after {
+    display: block;
+}
+
+/*Стили для чекбокса запомнить меня в авторизации Конец*/

@@ -15,6 +15,9 @@ namespace SocialNetwork_M35.Services
             CreateMap<RegisterViewModel, User>().ForMember(d => d.UserName,
                     opt => opt.MapFrom(r => r.Login));
 
+            CreateMap<RegisterViewModel, User>().ForMember(d => d.UserName,
+                    opt => opt.MapFrom(r => r.Login));
+
             /*
             CreateMap<Address, AddressInfo>();
 

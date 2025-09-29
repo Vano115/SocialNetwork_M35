@@ -1,22 +1,23 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SocialNetwork_M35.Data.Entityes;
 using SocialNetwork_M35.Models.Account;
 
 namespace SocialNetwork_M35.Controllers
 {
-    //[Route("[controller]")]
+    [Route("[controller]")]
     public class AccountManagerController : Controller
     {
-        private ILogger<RegisterController> _logger;
+        private ILogger<AccountManagerController> _logger;
         private IMapper _mapper;
 
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
         public AccountManagerController(IMapper mapper, UserManager<User> userManager,
-            SignInManager<User> signInManager, ILogger<RegisterController> logger)
+            SignInManager<User> signInManager, ILogger<AccountManagerController> logger)
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -25,25 +26,58 @@ namespace SocialNetwork_M35.Controllers
         }
 
         [Route("Login")]
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View("Login");
-        }
-
-        [Route("Login")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
 
-                var user = _mapper.Map<User>(model);
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+                _logger.LogInformation(result.Succeeded.ToString());
 
-                var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
+                    _logger.LogInformation($"Успешный вход UserName: {model.UserName}, Host: {Request.Host.Host}");
+                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        // Возврат на страницу из которой перешли в случае успешной авторизации
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        // Переход на главную в случае успешной авторизации
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+                }
+            }
+
+            return View("LoginPage");
+        }
+
+        [Route("LoginPage")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LoginPart2(LoginViewModel model)
+        {
+            _logger.LogInformation(ModelState.IsValid.ToString());
+
+            if (Request.Headers.ContainsKey("Referer"))
+            {
+                model.ReturnUrl = Request.Headers["Referer"]!.ToString();
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+                _logger.LogInformation(result.Succeeded.ToString());
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("Успешный вход");
                     if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                     {
                         return Redirect(model.ReturnUrl);
@@ -55,6 +89,7 @@ namespace SocialNetwork_M35.Controllers
                 }
                 else
                 {
+                    _logger.LogInformation("Неудачная попытка входа");
                     ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                 }
             }

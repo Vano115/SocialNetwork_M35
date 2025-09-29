@@ -8,7 +8,7 @@
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
 
 <h2>Вход</h2>
-<form method="post" asp-controller="AccountManager" asp-action="Login">
+<form method="post" asp-controller="AccountManager" asp-action="LoginPart2">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
         <label asp-for="UserName"></label><br />
@@ -27,6 +27,7 @@
             Запомнить меня
         </label>
     </div>
+    
 
     <div>
         <button type="submit">Вход</button>
