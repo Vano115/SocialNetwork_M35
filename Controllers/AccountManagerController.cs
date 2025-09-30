@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SocialNetwork_M35.Data.Entityes;
 using SocialNetwork_M35.Models.Account;
+using SocialNetwork_M35.Models.UsersModel;
 
 namespace SocialNetwork_M35.Controllers
 {
@@ -103,6 +105,19 @@ namespace SocialNetwork_M35.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [Route("UserProfilePage")]
+        [HttpGet]
+        [Authorize]
+
+        public async Task<IActionResult> UserProfilePage()
+        {
+            var user = User;
+
+            var result = _userManager.GetUserAsync(user);
+
+            return View("User", new UserViewModel(result.Result));
         }
     }
 }
