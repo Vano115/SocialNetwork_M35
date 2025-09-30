@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+using Microsoft.VisualBasic;
 using SocialNetwork_M35.Data.Entityes;
 using SocialNetwork_M35.Models.Account;
+using System.Globalization;
 
 namespace SocialNetwork_M35.Controllers
 {
@@ -33,6 +35,13 @@ namespace SocialNetwork_M35.Controllers
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<User>(model);
+
+                // Маппер не устанавливает дату т.к. обьекты DateTime.Day и т.д. только для чтения
+                // Нужно присваивать всё вручную
+                DateTime userBirth = 
+                    DateTime.ParseExact($"{model.Date}/{model.Month}/{model.Year}", "dd/MM/yyyy", CultureInfo.CurrentCulture);
+
+                user.BirthDate = userBirth;
 
                 var result = await _userManager.CreateAsync(user, model.PasswordReg);
 

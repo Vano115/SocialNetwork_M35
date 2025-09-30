@@ -12,12 +12,9 @@ namespace SocialNetwork_M35.Services
         /// </summary>
         public MappingProfile()
         {
-            CreateMap<RegisterViewModel, User>().ForMember(d => d.UserName,
-                    opt => opt.MapFrom(r => r.Login));
-
-            CreateMap<RegisterViewModel, User>().ForMember(d => d.UserName,
-                    opt => opt.MapFrom(r => r.Login));
-
+            CreateMap<RegisterViewModel, User>()
+                .ForMember(d => d.UserName, opt => opt.MapFrom(r => r.Login))
+                .ForMember(d => d.Email, opt => opt.MapFrom(r => r.EmailReg));
             /*
             CreateMap<Address, AddressInfo>();
 
