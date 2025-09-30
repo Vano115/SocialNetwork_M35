@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SocialNetwork_M35.Data.Entityes;
 using SocialNetwork_M35.Models.Account;
-using SocialNetwork_M35.Models.UsersModel;
 
 namespace SocialNetwork_M35.Controllers
 {
@@ -29,6 +30,7 @@ namespace SocialNetwork_M35.Controllers
 
         [Route("Login")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -63,7 +65,7 @@ namespace SocialNetwork_M35.Controllers
         [Route("LoginPage")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginPart2(LoginViewModel model)
+        public async Task<IActionResult> LoginPage(LoginViewModel model)
         {
             _logger.LogInformation(ModelState.IsValid.ToString());
 
@@ -95,15 +97,17 @@ namespace SocialNetwork_M35.Controllers
                     ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                 }
             }
-            return View("Views/Home/Index.cshtml");
+            // return View(model); - можно использовать в случае одинаковых названий метода контроллера и страницы cshtml
+            return View(model);
+            //return View("Views/Home/Index.cshtml");
         }
 
-        [Route("Logout")]
-        [HttpPost]
         [ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            _logger.LogInformation("Выход пользователя");
             return RedirectToAction("Index", "Home");
         }
 
@@ -111,13 +115,13 @@ namespace SocialNetwork_M35.Controllers
         [HttpGet]
         [Authorize]
 
-        public async Task<IActionResult> UserProfilePage()
+        public IActionResult UserProfilePage()
         {
             var user = User;
 
             var result = _userManager.GetUserAsync(user);
 
-            return View("User", new UserViewModel(result.Result));
+            return View("Views/User/UserProfilePage.cshtml", new UserViewModel(result.Result));
         }
     }
 }
