@@ -123,5 +123,57 @@ namespace SocialNetwork_M35.Controllers
 
             return View("Views/User/UserProfilePage.cshtml", new UserViewModel(result.Result));
         }
+
+        [Authorize]
+        [Route("Edit")]
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(model.Id);
+
+                if (user != null)
+                {
+                    user.Convert(model);
+                }
+                else
+                {
+
+                    return RedirectToAction("Edit", "AccountManager");
+                }
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("UserProfilePage", "AccountManager");
+                }
+                else
+                {
+                    return RedirectToAction("Edit", "AccountManager");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Некорректные данные");
+                return View("Edit", model);
+            }
+        }
+
+        [Route("UserList")]
+        [HttpPost]
+        public IActionResult UserList(string search)
+        {
+            var model = new SearchViewModel
+            {
+                /*при запросе LINQ нужно обозначить, что вы используете список как перечислимый элемент. 
+                 * То есть перед запросом LINQ не забудьте добавить AsEnumerable.*/
+
+                users = _userManager.Users.AsEnumerable().Where(x => x.GetFullName().ToLower().Contains(search.ToLower())).ToList()
+            };
+
+            return View("Views/User/UserList.cshtml", model);
+        }
     }
 }

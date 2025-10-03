@@ -20,28 +20,42 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SocialNetwork_M35</a>
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <!--<a class="navbar-brand" asp-area="" asp-controller="AccountManager" asp-action="Logout">Выход</a>-->
-                    @using (Html.BeginForm("Logout", "AccountManager", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        <button type="submit">Выйти</button>
-                    }
-                    <a class="navbar-brand" asp-area="" asp-controller="AccountManager" asp-action="UserProfilePage">Профиль</a>
-                }
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SocialNetwork_M35</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="navbar-brand" asp-area="" asp-controller="AccountManager" asp-action="UserProfilePage">Профиль</a>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-area="" asp-controller="AccountManager" asp-action="UserList">
+                                    <i class="fa fa-search"></i>
+                                    <input type="text" placeholder="Поиск" name="search">
+                                </form>
+                            </li>
+
+                            <li class="nav-item">
+                                @using (Html.BeginForm("Logout", "AccountManager", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit">Выйти</button>
+                                }
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
                         </li>
                     </ul>
                 </div>

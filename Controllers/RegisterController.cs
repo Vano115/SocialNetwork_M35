@@ -38,10 +38,8 @@ namespace SocialNetwork_M35.Controllers
 
                 // Маппер не устанавливает дату т.к. обьекты DateTime.Day и т.д. только для чтения
                 // Нужно присваивать всё вручную
-                DateTime userBirth = 
-                    DateTime.ParseExact($"{model.Date}/{model.Month}/{model.Year}", "dd/MM/yyyy", CultureInfo.CurrentCulture);
 
-                user.BirthDate = userBirth;
+                user.BirthDate = BirthDate(model.Date, model.Month, model.Year);
 
                 var result = await _userManager.CreateAsync(user, model.PasswordReg);
 
@@ -49,7 +47,7 @@ namespace SocialNetwork_M35.Controllers
                 {
                     await _signInManager.SignInAsync(user, false);
                     // RedirectToAction - перенаправляет пользователя по указаному пути
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("UserProfilePage", "AccountManager");
                 }
                 else
                 {
@@ -68,6 +66,32 @@ namespace SocialNetwork_M35.Controllers
         {
             var user = _mapper.Map<User>(model);
             return View("RegisterPart2", model);
+        }
+
+        private DateTime BirthDate(int day, int month, int year)
+        {
+            DateTime result;
+            string dayStr = "0";
+            string monthStr = "0";
+
+            if (day < 10)
+            {
+                dayStr += day;
+            }
+            else
+            {
+                dayStr = day.ToString();
+            }
+            if (month < 10)
+            {
+                monthStr += month;
+            }
+            else
+            {
+                monthStr = month.ToString();
+            }
+
+            return result = DateTime.ParseExact($"{dayStr}/{monthStr}/{year}", "dd/MM/yyyy", CultureInfo.CurrentCulture);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace SocialNetwork_M35.Data.Entityes
         
         public string MainImage { get; set; }
 
-        public List<string> Images { get; set; }
+        public List<string> Images { get; set; } = new List<string>();
 
         public string Status { get; set; }
 
@@ -32,8 +32,7 @@ namespace SocialNetwork_M35.Data.Entityes
 
         public User()
         {
-            MainImage = "https://via.placeholder.com/500";
-            Images = new List<string>();
+            MainImage = "https://thispersondoesnotexist.com";
             Status = "Ура! Я в соцсети!";
             About = "Информация обо мне.";
         }
